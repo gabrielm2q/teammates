@@ -29,9 +29,11 @@ import teammates.common.datatransfer.attributes.StudentAttributes;
 import teammates.common.datatransfer.questions.FeedbackQuestionType;
 import teammates.common.datatransfer.questions.FeedbackRankRecipientsResponseDetails;
 import teammates.common.datatransfer.questions.FeedbackResponseDetails;
+import teammates.common.datatransfer.questions.FeedbackTextQuestionDetails;
 import teammates.common.datatransfer.questions.FeedbackTextResponseDetails;
 import teammates.common.exception.EntityAlreadyExistsException;
 import teammates.common.exception.EntityDoesNotExistException;
+import teammates.common.util.Const;
 import teammates.test.AssertHelper;
 
 /**
@@ -293,6 +295,128 @@ public class FeedbackResponsesLogicTest extends BaseLogicTest {
         int responseRateAfterDeletion = getResponseRate(responseShouldBeDeleted.getFeedbackSessionName(),
                 responseShouldBeDeleted.getCourseId());
         assertEquals(originalResponseRate, responseRateAfterDeletion);
+    }
+
+    @Test
+    public void testIsResponseOfQuestionVisibleToStudent_isResponseOfFeedbackQuestionVisibleToStudent_visibilityShouldBeCorrectlyEvaluated() {
+        // CT1
+        FeedbackQuestionAttributes questionCT1 = FeedbackQuestionAttributes.builder()
+            .withCourseId("idOfRandomCourse1")
+            .withFeedbackSessionName("nameOfRandomFeedbackSession")
+            .withQuestionNumber(1)
+            .withNumberOfEntitiesToGiveFeedbackTo(Const.MAX_POSSIBLE_RECIPIENTS)
+            .withQuestionDetails(new FeedbackTextQuestionDetails("random question details"))
+            .withShowRecipientNameTo(new ArrayList<>())
+            .withShowGiverNameTo(new ArrayList<>())
+            .withShowResponsesTo(new ArrayList<>(Arrays.asList(FeedbackParticipantType.STUDENTS)))
+            .withGiverType(FeedbackParticipantType.STUDENTS)
+            .withRecipientType(FeedbackParticipantType.TEAMS)
+            .build();
+
+        boolean responseCT1 = frLogic.isResponseOfFeedbackQuestionVisibleToStudent(questionCT1);
+        assertTrue(responseCT1);
+        
+        // CT2
+        FeedbackQuestionAttributes questionCT2 = FeedbackQuestionAttributes.builder()
+            .withCourseId("idOfRandomCourse1")
+            .withFeedbackSessionName("nameOfRandomFeedbackSession")
+            .withQuestionNumber(1)
+            .withNumberOfEntitiesToGiveFeedbackTo(Const.MAX_POSSIBLE_RECIPIENTS)
+            .withQuestionDetails(new FeedbackTextQuestionDetails("random question details"))
+            .withShowRecipientNameTo(new ArrayList<>())
+            .withShowGiverNameTo(new ArrayList<>())
+            .withShowResponsesTo(new ArrayList<>(Arrays.asList(FeedbackParticipantType.RECEIVER)))
+            .withGiverType(FeedbackParticipantType.STUDENTS)
+            .withRecipientType(FeedbackParticipantType.GIVER)
+            .build();
+
+        boolean responseCT2 = frLogic.isResponseOfFeedbackQuestionVisibleToStudent(questionCT2);
+        assertTrue(responseCT2);
+
+        // CT3
+        FeedbackQuestionAttributes questionCT3 = FeedbackQuestionAttributes.builder()
+            .withCourseId("idOfRandomCourse1")
+            .withFeedbackSessionName("nameOfRandomFeedbackSession")
+            .withQuestionNumber(1)
+            .withNumberOfEntitiesToGiveFeedbackTo(Const.MAX_POSSIBLE_RECIPIENTS)
+            .withQuestionDetails(new FeedbackTextQuestionDetails("random question details"))
+            .withShowRecipientNameTo(new ArrayList<>())
+            .withShowGiverNameTo(new ArrayList<>())
+            .withShowResponsesTo(new ArrayList<>())
+            .withGiverType(FeedbackParticipantType.GIVER)
+            .withRecipientType(FeedbackParticipantType.TEAMS)
+            .build();
+
+        boolean responseCT3 = frLogic.isResponseOfFeedbackQuestionVisibleToStudent(questionCT3);
+        assertFalse(responseCT3);
+
+        // CT4
+        FeedbackQuestionAttributes questionCT4 = FeedbackQuestionAttributes.builder()
+            .withCourseId("idOfRandomCourse1")
+            .withFeedbackSessionName("nameOfRandomFeedbackSession")
+            .withQuestionNumber(1)
+            .withNumberOfEntitiesToGiveFeedbackTo(Const.MAX_POSSIBLE_RECIPIENTS)
+            .withQuestionDetails(new FeedbackTextQuestionDetails("random question details"))
+            .withShowRecipientNameTo(new ArrayList<>())
+            .withShowGiverNameTo(new ArrayList<>())
+            .withShowResponsesTo(new ArrayList<>(Arrays.asList(FeedbackParticipantType.RECEIVER)))
+            .withGiverType(FeedbackParticipantType.GIVER)
+            .withRecipientType(FeedbackParticipantType.SELF)
+            .build();
+
+        boolean responseCT4 = frLogic.isResponseOfFeedbackQuestionVisibleToStudent(questionCT4);
+        assertFalse(responseCT4);
+
+        // CT5
+        FeedbackQuestionAttributes questionCT5 = FeedbackQuestionAttributes.builder()
+            .withCourseId("idOfRandomCourse1")
+            .withFeedbackSessionName("nameOfRandomFeedbackSession")
+            .withQuestionNumber(1)
+            .withNumberOfEntitiesToGiveFeedbackTo(Const.MAX_POSSIBLE_RECIPIENTS)
+            .withQuestionDetails(new FeedbackTextQuestionDetails("random question details"))
+            .withShowRecipientNameTo(new ArrayList<>())
+            .withShowGiverNameTo(new ArrayList<>())
+            .withShowResponsesTo(new ArrayList<>())
+            .withGiverType(FeedbackParticipantType.TEAMS)
+            .withRecipientType(FeedbackParticipantType.SELF)
+            .build();
+
+        boolean responseCT5 = frLogic.isResponseOfFeedbackQuestionVisibleToStudent(questionCT5);
+        assertTrue(responseCT5);
+
+        // CT6
+        FeedbackQuestionAttributes questionCT6 = FeedbackQuestionAttributes.builder()
+            .withCourseId("idOfRandomCourse1")
+            .withFeedbackSessionName("nameOfRandomFeedbackSession")
+            .withQuestionNumber(1)
+            .withNumberOfEntitiesToGiveFeedbackTo(Const.MAX_POSSIBLE_RECIPIENTS)
+            .withQuestionDetails(new FeedbackTextQuestionDetails("random question details"))
+            .withShowRecipientNameTo(new ArrayList<>())
+            .withShowGiverNameTo(new ArrayList<>())
+            .withShowResponsesTo(new ArrayList<>(Arrays.asList(FeedbackParticipantType.OWN_TEAM_MEMBERS)))
+            .withGiverType(FeedbackParticipantType.SELF)
+            .withRecipientType(FeedbackParticipantType.SELF)
+            .build();
+
+        boolean responseCT6 = frLogic.isResponseOfFeedbackQuestionVisibleToStudent(questionCT6);
+        assertTrue(responseCT6);
+
+        // CT7
+        FeedbackQuestionAttributes questionCT7 = FeedbackQuestionAttributes.builder()
+            .withCourseId("idOfRandomCourse1")
+            .withFeedbackSessionName("nameOfRandomFeedbackSession")
+            .withQuestionNumber(1)
+            .withNumberOfEntitiesToGiveFeedbackTo(Const.MAX_POSSIBLE_RECIPIENTS)
+            .withQuestionDetails(new FeedbackTextQuestionDetails("random question details"))
+            .withShowRecipientNameTo(new ArrayList<>())
+            .withShowGiverNameTo(new ArrayList<>())
+            .withShowResponsesTo(new ArrayList<>(Arrays.asList(FeedbackParticipantType.RECEIVER_TEAM_MEMBERS)))
+            .withGiverType(FeedbackParticipantType.SELF)
+            .withRecipientType(FeedbackParticipantType.SELF)
+            .build();
+
+        boolean responseCT7 = frLogic.isResponseOfFeedbackQuestionVisibleToStudent(questionCT7);
+        assertTrue(responseCT7);
     }
 
     @Test
