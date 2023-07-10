@@ -605,6 +605,76 @@ public class StudentsLogicTest extends BaseLogicTest {
     }
 
     @Test
+    public void test_areAllStudentsInSomeTeam() {
+
+        ______TS("CASO DE TESTES 1 - CT1");
+
+        CourseAttributes curso1 = dataBundle.courses.get("cursoExemplo1");
+        String team1 = "PRIMEIRO";
+        List<String> emails1 = new ArrayList<String>();
+
+        assertFalse(studentsLogic.areAllStudentsInSomeTeam(
+            curso1.getId(), 
+            team1, 
+            emails1)
+        );
+
+        ______TS("CASO DE TESTES 2 - CT2");
+
+        List<String> emails2 = new ArrayList<String>();
+
+        StudentAttributes estudante1Curso1 = dataBundle.students.get("estudante1Curso1");
+        emails2.add(estudante1Curso1.getEmail());
+
+        assertTrue(studentsLogic.areAllStudentsInSomeTeam(
+            curso1.getId(), 
+            team1, 
+            emails2)
+        );
+
+        ______TS("CASO DE TESTES 3 - CT3");
+
+        List<String> emails3 = new ArrayList<String>();
+
+        StudentAttributes estudante2Curso1 = dataBundle.students.get("estudante2Curso1");
+        emails3.add(estudante1Curso1.getEmail());
+        emails3.add(estudante2Curso1.getEmail());
+
+        
+        assertFalse(studentsLogic.areAllStudentsInSomeTeam(
+            curso1.getId(), 
+            "PRIMEIRO", 
+            emails3)
+        );
+
+        ______TS("CASO DE TESTES 4 - CT4");
+
+        List<String> emails4 = new ArrayList<String>();
+
+        StudentAttributes estudante3Curso1 = dataBundle.students.get("estudante3Curso1");
+        emails4.add(estudante1Curso1.getEmail());
+        emails4.add(estudante3Curso1.getEmail());
+
+        assertFalse(studentsLogic.areAllStudentsInSomeTeam(
+            "idInvalidoDoCurso", 
+            team1, 
+            emails4)
+        );
+
+        ______TS("CASO DE TESTES 5 - CT5");
+
+        List<String> emails5 = new ArrayList<String>();
+        emails5.add(estudante1Curso1.getEmail());
+        emails5.add(estudante3Curso1.getEmail());
+
+        assertTrue(studentsLogic.areAllStudentsInSomeTeam(
+            curso1.getId(), 
+            team1, 
+            emails5)
+        );
+    }
+
+    @Test
     public void testDeleteStudentCascade_lastPersonInTeam_shouldDeleteTeamResponses() {
         StudentAttributes student1InCourse2 = dataBundle.students.get("student1InCourse2");
         StudentAttributes student2InCourse2 = dataBundle.students.get("student2InCourse2");

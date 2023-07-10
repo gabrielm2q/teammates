@@ -218,6 +218,23 @@ public final class StudentsLogic {
     }
 
     /**
+     * Returns true if each student of the given emails belongs to the given team
+     */
+    public boolean areAllStudentsInSomeTeam(String courseId, String teamName, List<String> studentEmails) {
+        if (studentEmails.isEmpty()) return false;
+
+        for ( String email : studentEmails ) {
+            StudentAttributes student = getStudentForEmail(courseId, email);
+
+            if ( student == null || !student.getTeam().equals(teamName) )
+                return false;
+        }
+
+        return true;
+    }
+
+
+    /**
      * Updates a student by {@link StudentAttributes.UpdateOptions}.
      *
      * <p>If email changed, update by recreating the student and cascade update all responses

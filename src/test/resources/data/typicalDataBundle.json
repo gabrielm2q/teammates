@@ -181,6 +181,13 @@
       "name": "Testing<script> alert('hi!'); </script>",
       "institute": "inst<script> alert('hi!'); </script>",
       "timeZone": "Africa/Johannesburg"
+    },
+    "cursoExemplo1": {
+        "createdAt": "2023-07-09T22:20:00Z",
+        "id": "idDoCursoExemplo1",
+        "name": "cursoExemplo1<script> alert('hi!'); </script>",
+        "institute": "instituto<script> alert('hi!'); </script>",
+        "timeZone": "UTC"
     }
   },
   "instructors": {
@@ -747,6 +754,33 @@
       "comments": "<script> alert('hi!'); </script>",
       "team": "Team tags&\"</td>",
       "section": "Section'</td>"
+    },
+    "estudante1Curso1": {
+        "googleId": "estudante1Curso1",
+        "email": "estudante1Curso1@estudante.tmt",
+        "course": "idDoCursoExemplo1",
+        "name": "Est1<script> alert('hi!'); </script>",
+        "comments": "<script> alert('hi!'); </script>",
+        "team": "PRIMEIRO",
+        "section": "Section'</td>"
+    },
+    "estudante2Curso1": {
+        "googleId": "estudante2Curso1",
+        "email": "estudante2Curso1@estudante.tmt",
+        "course": "idDoCursoExemplo1",
+        "name": "Est1<script> alert('hi!'); </script>",
+        "comments": "<script> alert('hi!'); </script>",
+        "team": "SEGUNDO",
+        "section": "Section'</td>"
+    },
+    "estudante3Curso1": {
+        "googleId": "estudante3Curso1",
+        "email": "estudante3Curso1@estudante.tmt",
+        "course": "idDoCursoExemplo1",
+        "name": "Est3<script> alert('hi!'); </script>",
+        "comments": "<script> alert('hi!'); </script>",
+        "team": "PRIMEIRO",
+        "section": "Section'</td>"
     }
   },
   "feedbackSessions": {
